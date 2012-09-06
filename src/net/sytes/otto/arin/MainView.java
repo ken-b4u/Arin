@@ -52,6 +52,7 @@ implements SurfaceHolder.Callback, Runnable {
         mp[3]=MediaPlayer.create(context,R.raw.sample3);
         mp[4]=MediaPlayer.create(context,R.raw.sample4);
         mp[5]=MediaPlayer.create(context,R.raw.sample5);
+
     }
 
     // 音声を再生中かどうか
@@ -99,6 +100,43 @@ implements SurfaceHolder.Callback, Runnable {
         return true;
     }
 
+    // 更新処理
+    private void Update(){
+        // イラストの移動
+        x += vx;
+        if (x < 0 || getWidth() < x+image.getHeight())  vx *= -1;
+    }
+
+    // 描画処理
+    private void Draw(Canvas canvas){
+
+    	// 背景色を設定
+        canvas.drawColor(Color.MAGENTA);
+
+        // グリッドを描画
+        Paint pa = new Paint();
+        pa.setColor(Color.argb(75, 255, 255, 255));
+        pa.setStrokeWidth(1);
+        for (int y = 0; y < 800; y = y + 10) {
+            canvas.drawLine(0, y, 479, y, pa);
+        }
+        for (int x = 0; x < 480; x = x + 10) {
+            canvas.drawLine(x, 0, x, 799, pa);
+        }
+
+        // イラストとボタンを描画
+        canvas.drawBitmap(image, x, y, paint);
+        canvas.drawBitmap(button, getWidth()/2, getHeight()*2/3,paint);
+
+        // 押された回数を描画する
+        Paint p = new Paint();
+        p.setColor(Color.BLACK);
+        p.setTextSize(50);
+        String s = String.format("%1$04dあーりんだよぉ", count);
+        canvas.drawText(s, 0, 400, p);
+    }
+
+    // 描画と更新を合わせたもの
     @Override
     public void run() {
         // Runnableインターフェースをimplementsしているので、runメソッドを実装する
@@ -107,35 +145,9 @@ implements SurfaceHolder.Callback, Runnable {
             Canvas canvas = getHolder().lockCanvas();
             if (canvas != null)
             {
-            	// 背景色を設定
-                canvas.drawColor(Color.MAGENTA);
-
-                // グリッドを描画
-                Paint pa = new Paint();
-                pa.setColor(Color.argb(75, 255, 255, 255));
-                pa.setStrokeWidth(1);
-                for (int y = 0; y < 800; y = y + 10) {
-                    canvas.drawLine(0, y, 479, y, pa);
-                }
-                for (int x = 0; x < 480; x = x + 10) {
-                    canvas.drawLine(x, 0, x, 799, pa);
-                }
-
-                // イラストとボタンを描画
-                canvas.drawBitmap(image, x, y, paint);
-                canvas.drawBitmap(button, getWidth()/2, getHeight()*2/3,paint);
-
-                // 押された回数を描画する
-                Paint p = new Paint();
-                p.setColor(Color.BLACK);
-                p.setTextSize(50);
-                String s = String.format("%1$04dあーりんだよぉ", count);
-                canvas.drawText(s, 0, 400, p);
+            	Update();
+            	Draw(canvas);
                 getHolder().unlockCanvasAndPost(canvas);
-
-                // イラストの移動
-                x += vx;
-                if (x < 0 || getWidth() < x+image.getHeight())  vx *= -1;
             }
         }
     }
