@@ -14,44 +14,37 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-class MainView extends SurfaceView 
+class MainView extends SurfaceView
 implements SurfaceHolder.Callback, Runnable {
-	// スレッドクラス
-    Thread mainLoop = null;
-    // 描画用
-    Paint paint = null;
-    
-	// 円のX,Y座標
-    private int circleX = 10;
-    private int circleY = 10;
-    // 円の移動量
-    private int circleVx = 5;
-    private int circleVy = 5;
-    
-    private MediaPlayer mp[];
-    //private Context context;
-    
-    private Bitmap bmp;
-    private Bitmap button;
-    
-    private int count = 0;
-    
+
+	Paint paint = null;			// 描画用
+    Thread mainLoop = null;		// スレッド
+    private int x = 10,y = 10;	// イラストの座標
+    private int vx = 5;			// イラストの移動量
+    private MediaPlayer mp[];	// 音声再生
+    private Bitmap image;		// イラスト
+    private Bitmap button;		// ボタン
+    private int count = 0;		// ボタンのクリック回数
+
     public MainView(Context context) {
         super(context);
         // SurfaceView描画に用いるコールバックを登録する。
         getHolder().addCallback(this);
+
         // 描画用の準備
         paint = new Paint();
         paint.setColor(Color.WHITE);
+
         // スレッド開始
         mainLoop = new Thread(this);
         mainLoop.start();
-        
-     // リソースからビットマップを取り出す
+
+        // リソースからビットマップを取り出す
         Resources r = getResources();
-        bmp = BitmapFactory.decodeResource(r, R.drawable.image1);
+        image = BitmapFactory.decodeResource(r, R.drawable.image1);
         button = BitmapFactory.decodeResource(r, R.drawable.button);
-        
+
+        // メディアプレイヤーを作成
         mp = new MediaPlayer[6];
         mp[0]=MediaPlayer.create(context,R.raw.sample0);
         mp[1]=MediaPlayer.create(context,R.raw.sample1);
@@ -59,32 +52,32 @@ implements SurfaceHolder.Callback, Runnable {
         mp[3]=MediaPlayer.create(context,R.raw.sample3);
         mp[4]=MediaPlayer.create(context,R.raw.sample4);
         mp[5]=MediaPlayer.create(context,R.raw.sample5);
-        //this.context = context;
     }
 
+    // 音声を再生中かどうか
     private boolean isPlaying(){
-    	for(int i=0;i<6;i++){
+    	for(int i=0;i<mp.length;i++){
     		if(mp[i].isPlaying()){
     			return true;
     		}
     	}
     	return false;
     }
+
+    // 音声を再生する
     private void start(){
-    	int x = new Random().nextInt(6);
+    	int x = new Random().nextInt(mp.length);
     	mp[x].start();
     }
-    
+
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width,
             int height) {
-        // TODO 今回は何もしない。
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        // SurfaceView生成時に呼び出されるメソッド。
-        // 今はとりあえず背景を白にするだけ。
+        // 背景を変更
         Canvas canvas = holder.lockCanvas();
         canvas.drawColor(Color.MAGENTA);
         holder.unlockCanvasAndPost(canvas);
@@ -92,31 +85,13 @@ implements SurfaceHolder.Callback, Runnable {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        // TODO 今回は何もしない。
     	mainLoop = null;
     }
- // タッチイベントを処理するためOverrideする
+
+    // タッチイベント
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        // 移動する方向を反転させる
-        // onTouchEventでは、以下の動きをとらえる事ができる
-        //  [ACTION_DOWN] [ACTION_UP] [ACTION_MOVE] [ACTION_CANCEL]
-        // 今回はACTION_DOWN(タッチパネルが押されたとき)に、ボールの動きを反転させます
-        switch (event.getAction())
-        {
-        case MotionEvent.ACTION_DOWN:
-            //circleVx *= -1;
-            //circleVy *= -1;
-            break;
-        default:
-            break;
-        }
-        //音楽再生
-       /*
-        if(!mp1.isPlaying()){ 
-        	mp1.start();
-        }
-        */
+        // 音楽が再生中でなければ再生する
         if(!this.isPlaying()){
         	this.start();
         	count++;
@@ -132,8 +107,10 @@ implements SurfaceHolder.Callback, Runnable {
             Canvas canvas = getHolder().lockCanvas();
             if (canvas != null)
             {
+            	// 背景色を設定
                 canvas.drawColor(Color.MAGENTA);
-                // グリッドを描画する
+
+                // グリッドを描画
                 Paint pa = new Paint();
                 pa.setColor(Color.argb(75, 255, 255, 255));
                 pa.setStrokeWidth(1);
@@ -144,23 +121,21 @@ implements SurfaceHolder.Callback, Runnable {
                     canvas.drawLine(x, 0, x, 799, pa);
                 }
 
-                // 円を描画する
-                //canvas.drawCircle(circleX, circleY, 10, paint);
-                canvas.drawBitmap(bmp, circleX, circleY, paint);
+                // イラストとボタンを描画
+                canvas.drawBitmap(image, x, y, paint);
                 canvas.drawBitmap(button, getWidth()/2, getHeight()*2/3,paint);
-                //テキストを描画する
+
+                // 押された回数を描画する
                 Paint p = new Paint();
                 p.setColor(Color.BLACK);
                 p.setTextSize(50);
                 String s = String.format("%1$04dあーりんだよぉ", count);
                 canvas.drawText(s, 0, 400, p);
                 getHolder().unlockCanvasAndPost(canvas);
-                // 円の座標を移動させる
-                circleX += circleVx;
-                //circleY += circleVy;
-                // 画面の領域を超えた？
-                if (circleX < 0 || getWidth() < circleX+bmp.getHeight())  circleVx *= -1;
-                if (circleY < 0 || getHeight() < circleY+bmp.getWidth()) circleVy *= -1;
+
+                // イラストの移動
+                x += vx;
+                if (x < 0 || getWidth() < x+image.getHeight())  vx *= -1;
             }
         }
     }
