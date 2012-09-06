@@ -1,7 +1,5 @@
 package net.sytes.otto.arin;
 
-import java.util.Random;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -9,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.media.MediaPlayer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -17,14 +14,14 @@ import android.view.SurfaceView;
 class MainView extends SurfaceView
 implements SurfaceHolder.Callback, Runnable {
 
-	Paint paint = null;			// 描画用
-    Thread mainLoop = null;		// スレッド
-    private int x = 10,y = 10;	// イラストの座標
-    private int vx = 5;			// イラストの移動量
-    private MediaPlayer mp[];	// 音声再生
-    private Bitmap image;		// イラスト
-    private Bitmap button;		// ボタン
-    private int count = 0;		// ボタンのクリック回数
+	private Paint paint = null;		// 描画用
+    private Thread mainLoop = null;	// スレッド
+    private int x = 10,y = 10;		// イラストの座標
+    private int vx = 5;				// イラストの移動量
+    private Bitmap image;			// イラスト
+    private Bitmap button;			// ボタン
+    private int count = 0;			// ボタンのクリック回数
+    private ArinPlayer arinPlayer;	// あーりんプレイヤー
 
     public MainView(Context context) {
         super(context);
@@ -44,31 +41,8 @@ implements SurfaceHolder.Callback, Runnable {
         image = BitmapFactory.decodeResource(r, R.drawable.image1);
         button = BitmapFactory.decodeResource(r, R.drawable.button);
 
-        // メディアプレイヤーを作成
-        mp = new MediaPlayer[6];
-        mp[0]=MediaPlayer.create(context,R.raw.sample0);
-        mp[1]=MediaPlayer.create(context,R.raw.sample1);
-        mp[2]=MediaPlayer.create(context,R.raw.sample2);
-        mp[3]=MediaPlayer.create(context,R.raw.sample3);
-        mp[4]=MediaPlayer.create(context,R.raw.sample4);
-        mp[5]=MediaPlayer.create(context,R.raw.sample5);
-
-    }
-
-    // 音声を再生中かどうか
-    private boolean isPlaying(){
-    	for(int i=0;i<mp.length;i++){
-    		if(mp[i].isPlaying()){
-    			return true;
-    		}
-    	}
-    	return false;
-    }
-
-    // 音声を再生する
-    private void start(){
-    	int x = new Random().nextInt(mp.length);
-    	mp[x].start();
+        // あーりんプレイヤー作成
+        arinPlayer = new ArinPlayer(context);
     }
 
     @Override
@@ -79,9 +53,11 @@ implements SurfaceHolder.Callback, Runnable {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         // 背景を変更
+    	/*
         Canvas canvas = holder.lockCanvas();
         canvas.drawColor(Color.MAGENTA);
         holder.unlockCanvasAndPost(canvas);
+        */
     }
 
     @Override
@@ -93,11 +69,11 @@ implements SurfaceHolder.Callback, Runnable {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // 音楽が再生中でなければ再生する
-        if(!this.isPlaying()){
-        	this.start();
-        	count++;
-        }
-        return true;
+    	if(!arinPlayer.isPlaying()){
+    		arinPlayer.startRandom();
+    		count++;
+    	}
+    	return true;
     }
 
     // 更新処理
@@ -109,7 +85,6 @@ implements SurfaceHolder.Callback, Runnable {
 
     // 描画処理
     private void Draw(Canvas canvas){
-
     	// 背景色を設定
         canvas.drawColor(Color.MAGENTA);
 
