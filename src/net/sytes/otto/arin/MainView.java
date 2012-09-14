@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -19,7 +20,8 @@ implements SurfaceHolder.Callback, Runnable {
     private int x = 10,y = 10;		// イラストの座標
     private int vx = 5;				// イラストの移動量
     private Bitmap image;			// イラスト
-    private Bitmap button;			// ボタン
+    private Bitmap button,button2;	// ボタン
+    private Bitmap back;			// 背景
     private int count = 0;			// ボタンのクリック回数
     private ArinPlayer arinPlayer;	// あーりんプレイヤー
 
@@ -40,6 +42,8 @@ implements SurfaceHolder.Callback, Runnable {
         Resources r = getResources();
         image = BitmapFactory.decodeResource(r, R.drawable.image1);
         button = BitmapFactory.decodeResource(r, R.drawable.button);
+        button2 = BitmapFactory.decodeResource(r, R.drawable.button2);
+        back = BitmapFactory.decodeResource(r, R.drawable.back);
 
         // あーりんプレイヤー作成
         arinPlayer = new ArinPlayer(context);
@@ -99,16 +103,36 @@ implements SurfaceHolder.Callback, Runnable {
             canvas.drawLine(x, 0, x, 799, pa);
         }
 
-        // イラストとボタンを描画
+        // 背景を描画
+        Rect src = new Rect(0,0,back.getWidth(),back.getHeight());
+        Rect dst = new Rect(0,0,getWidth(),getHeight());
+        canvas.drawBitmap(back,src,dst,paint);
+
+        // イラストを描画
         canvas.drawBitmap(image, x, y, paint);
-        canvas.drawBitmap(button, getWidth()/2, getHeight()*2/3,paint);
+
+        // ボタンを描画
+        int bx = getWidth()*4/5, by = getHeight()/4;
+        src = new Rect(0,0,button.getWidth(),button.getHeight());
+        dst = new Rect(
+        		getWidth()/2 - bx/2,
+        		getHeight()*3/4 - by/2,
+        		getWidth()/2 + bx/2,
+        		getHeight()*3/4+by/2
+        		);
+        if(arinPlayer.isPlaying()){
+        	canvas.drawBitmap(button2, src, dst, paint);
+        }else{
+        	canvas.drawBitmap(button, src, dst, paint);
+        }
 
         // 押された回数を描画する
         Paint p = new Paint();
-        p.setColor(Color.BLACK);
+        p.setColor(Color.MAGENTA);
         p.setTextSize(50);
         String s = String.format("%1$04dあーりんだよぉ", count);
-        canvas.drawText(s, 0, 400, p);
+        //canvas.drawText(s, 0, 400, p);
+        canvas.drawText(s, 0, getHeight()-40, p);
     }
 
     // 描画と更新を合わせたもの
