@@ -1,5 +1,7 @@
 package net.sytes.otto.arin;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -17,13 +19,15 @@ implements SurfaceHolder.Callback, Runnable {
 
 	private Paint paint = null;		// 描画用
     private Thread mainLoop = null;	// スレッド
-    private int x = 10,y = 10;		// イラストの座標
-    private int vx = 5;				// イラストの移動量
     private Bitmap image;			// イラスト
     private Bitmap button,button2;	// ボタン
     private Bitmap back;			// 背景
+    private Bitmap zImage;			// Zイメージ
     private int count = 0;			// ボタンのクリック回数
     private ArinPlayer arinPlayer;	// あーりんプレイヤー
+
+    private MovingImage arinImage;			// あーりんのイメージ
+    private ArrayList<MovingImage> images;	// Zイメージたち
 
     public MainView(Context context) {
         super(context);
@@ -44,6 +48,15 @@ implements SurfaceHolder.Callback, Runnable {
         button = BitmapFactory.decodeResource(r, R.drawable.button);
         button2 = BitmapFactory.decodeResource(r, R.drawable.button2);
         back = BitmapFactory.decodeResource(r, R.drawable.back);
+        zImage = BitmapFactory.decodeResource(r, R.drawable.zimage);
+
+        // あーりんのイメージ
+        this.arinImage = new MovingImage(image,0,0,1,0);
+
+        // イメージたち
+        images = new ArrayList<MovingImage>();
+        for(int i=0;i<10;i++)
+        	images.add(new MovingImage(zImage));
 
         // あーりんプレイヤー作成
         arinPlayer = new ArinPlayer(context);
@@ -83,8 +96,12 @@ implements SurfaceHolder.Callback, Runnable {
     // 更新処理
     private void Update(){
         // イラストの移動
-        x += vx;
-        if (x < 0 || getWidth() < x+image.getHeight())  vx *= -1;
+    	this.arinImage.move(getWidth(), getHeight());
+
+     // オブジェクト移動
+		for (int i = 0; i < this.images.size(); i++) {
+			images.get(i).move(getWidth(),getHeight());
+		}
     }
 
     // 描画処理
@@ -109,7 +126,7 @@ implements SurfaceHolder.Callback, Runnable {
         canvas.drawBitmap(back,src,dst,paint);
 
         // イラストを描画
-        canvas.drawBitmap(image, x, y, paint);
+        arinImage.draw(canvas);
 
         // ボタンを描画
         int bx = getWidth()*4/5, by = getHeight()/4;
@@ -131,8 +148,12 @@ implements SurfaceHolder.Callback, Runnable {
         p.setColor(Color.MAGENTA);
         p.setTextSize(50);
         String s = String.format("%1$04dあーりんだよぉ", count);
-        //canvas.drawText(s, 0, 400, p);
         canvas.drawText(s, 0, getHeight()-40, p);
+
+        // オブジェクトを描画
+		for (int i = 0; i < this.images.size(); i++) {
+			images.get(i).draw(canvas);
+		}
     }
 
     // 描画と更新を合わせたもの
