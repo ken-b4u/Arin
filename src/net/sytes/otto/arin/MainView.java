@@ -23,7 +23,7 @@ implements SurfaceHolder.Callback, Runnable {
     private Bitmap button,button2;	// ボタン
     private Bitmap back;			// 背景
     private Bitmap zImage;			// Zイメージ
-    private int count = 0;			// ボタンのクリック回数
+    private Counter counter;		//ボタンのクリック回数
     private ArinPlayer arinPlayer;	// あーりんプレイヤー
 
     private MovingImage arinImage;			// あーりんのイメージ
@@ -33,6 +33,9 @@ implements SurfaceHolder.Callback, Runnable {
         super(context);
         // SurfaceView描画に用いるコールバックを登録する。
         getHolder().addCallback(this);
+
+        //クリック回数
+        counter = new Counter(context);
 
         // 描画用の準備
         paint = new Paint();
@@ -55,7 +58,7 @@ implements SurfaceHolder.Callback, Runnable {
 
         // イメージたち
         images = new ArrayList<MovingImage>();
-        for(int i=0;i<10;i++)
+        for(int i=0;i<3;i++)
         	images.add(new MovingImage(zImage));
 
         // あーりんプレイヤー作成
@@ -88,7 +91,7 @@ implements SurfaceHolder.Callback, Runnable {
         // 音楽が再生中でなければ再生する
     	if(!arinPlayer.isPlaying()){
     		arinPlayer.startRandom();
-    		count++;
+    		counter.add();
     	}
     	return true;
     }
@@ -147,7 +150,7 @@ implements SurfaceHolder.Callback, Runnable {
         Paint p = new Paint();
         p.setColor(Color.MAGENTA);
         p.setTextSize(50);
-        String s = String.format("%1$04dあーりんだよぉ", count);
+        String s = String.format("%1$04dあーりんだよぉ", counter.read());
         canvas.drawText(s, 0, getHeight()-40, p);
 
         // オブジェクトを描画
