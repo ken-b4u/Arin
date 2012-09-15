@@ -182,13 +182,19 @@ SurfaceHolder.Callback, Runnable {
 
 	// タッチイベント
 	public boolean onTouchEvent(MotionEvent event) {
-		if(event.getAction() != MotionEvent.ACTION_DOWN){
+		if (event.getAction() != MotionEvent.ACTION_DOWN) {
 			return true;
 		}
-		// 音楽が再生中でなければ再生する
-		if(!arinPlayer.isPlaying()){
-			arinPlayer.startRandom();
-			counter.add();
+		// ボタンのクリック
+		int bx = getWidth() * 4 / 5, by = getHeight() / 4;
+		Rect dst = new Rect(getWidth() / 2 - bx / 2, getHeight() * 3 / 4 - by
+				/ 2, getWidth() / 2 + bx / 2, getHeight() * 3 / 4 + by / 2);
+		if (dst.contains((int) event.getX(), (int) event.getY())) {
+			// 音楽が再生中でなければ再生する
+			if (!arinPlayer.isPlaying()) {
+				arinPlayer.startRandom();
+				counter.add();
+			}
 		}
 		return true;
 	}
