@@ -29,15 +29,17 @@ SurfaceHolder.Callback, Runnable {
 	private Bitmap button,button2;	// ボタン
 	private Bitmap back;			// 背景
 	private Bitmap zImage;			// Zイメージ
-	private Counter counter;		//ボタンのクリック回数
+	public Counter counter;		//ボタンのクリック回数
 	private ArinPlayer arinPlayer;	// あーりんプレイヤー
 
 	private MovingImage arinImage;			// あーりんのイメージ
 	private ArrayList<MovingImage> images;	// Zイメージたち
+	public Selector selector;				// セレクター
 
 	public MainView(Context context) {
 		super(context);
-
+		// セレクター
+		selector = new Selector(context);
 
 		//クリック回数
 		counter = new Counter(context);
@@ -148,6 +150,9 @@ SurfaceHolder.Callback, Runnable {
 		Rect dst = new Rect(0,0,getWidth(),getHeight());
 		canvas.drawBitmap(back,src,dst,paint);
 
+		// セレクターを描画
+		selector.Draw(canvas);
+
 		// イラストを描画
 		arinImage.draw(canvas);
 
@@ -192,9 +197,16 @@ SurfaceHolder.Callback, Runnable {
 		if (dst.contains((int) event.getX(), (int) event.getY())) {
 			// 音楽が再生中でなければ再生する
 			if (!arinPlayer.isPlaying()) {
-				arinPlayer.startRandom();
+				//arinPlayer.startRandom();
+				arinPlayer.startIndex( selector.selectedIndex());
 				counter.add();
 			}
+		}
+		// 選択肢を更新
+		selector.setMax( counter.n /10 );
+		// 選択
+		if( event.getX() < 100){
+			selector.select( (int)event.getY() / 100 );
 		}
 		return true;
 	}
