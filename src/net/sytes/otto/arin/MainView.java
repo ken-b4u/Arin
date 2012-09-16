@@ -197,14 +197,9 @@ SurfaceHolder.Callback, Runnable {
 			}
 		}
 		// 選択肢を更新
-		selector.setMax( counter.n /10 );
+		selector.update(counter.n);
 		// 選択
 		selector.touch((int)event.getX(),(int) event.getY());
-		/*
-		if( event.getX() < 100){
-			selector.select( (int)event.getY() / 100 );
-		}
-		*/
 		return true;
 	}
 }

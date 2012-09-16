@@ -14,9 +14,12 @@ public class Selector {
 	private int index = 0;		// 今選択されている場所
 	private Bitmap images[];
 	private Bitmap selected,unselected;
-	private Rect src;
-	private Rect dst[];
+	private Rect src;			// 元画像
+	private Rect dst[];			// 表示する場所
 	private Paint paint;
+	private int border[] =		// いつ新しいのを開放するか
+			{0,10,20,40,80,160};
+
 	public Selector(Context context,int width){
 		paint = new Paint();
 		paint.setColor(Color.WHITE);
@@ -47,6 +50,8 @@ public class Selector {
 
 	public void Draw(Canvas canvas){
 		for(int i=0;i<images.length;i++){
+			String s = String.valueOf(border[i]);
+			canvas.drawText(s, dst[i].left,dst[i].top, paint);
 			if(i==selectedIndex()){
 				canvas.drawBitmap(selected, src,dst[i],paint);
 				canvas.drawBitmap(images[i], src,dst[i],paint);
@@ -55,9 +60,16 @@ public class Selector {
 				canvas.drawBitmap(images[i], src,dst[i],paint);
 			}
 			else{
-				String s = String.format("%1$02d", 10*i);
 				canvas.drawBitmap(unselected, src,dst[i],paint);
-				canvas.drawText(s, dst[i].left,dst[i].top, paint);
+			}
+		}
+	}
+
+	public void update(int count){
+		for(int i=5;i>=0;i--){
+			if( count >= border[i]){
+				setMax(i);
+				return;
 			}
 		}
 	}
