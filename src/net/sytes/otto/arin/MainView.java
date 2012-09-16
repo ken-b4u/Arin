@@ -25,21 +25,19 @@ SurfaceHolder.Callback, Runnable {
 	private Handler handler = new Handler();
 
 	private Paint paint = null;		// 描画用
-	private Bitmap image;			// イラスト
 	private Bitmap button,button2;	// ボタン
 	private Bitmap back;			// 背景
 	private Bitmap zImage;			// Zイメージ
-	public Counter counter;		//ボタンのクリック回数
+	public Counter counter;			//ボタンのクリック回数
 	private ArinPlayer arinPlayer;	// あーりんプレイヤー
-
-	private MovingImage arinImage;			// あーりんのイメージ
 	private ArrayList<MovingImage> images;	// Zイメージたち
 	public Selector selector;				// セレクター
-
+	private Context context;
 	public MainView(Context context) {
 		super(context);
-		// セレクター
-		selector = new Selector(context);
+
+
+		this.context = context;
 
 		//クリック回数
 		counter = new Counter(context);
@@ -50,14 +48,11 @@ SurfaceHolder.Callback, Runnable {
 
 		// リソースからビットマップを取り出す
 		Resources r = getResources();
-		image = BitmapFactory.decodeResource(r, R.drawable.image1);
 		button = BitmapFactory.decodeResource(r, R.drawable.button);
 		button2 = BitmapFactory.decodeResource(r, R.drawable.button2);
 		back = BitmapFactory.decodeResource(r, R.drawable.back);
 		zImage = BitmapFactory.decodeResource(r, R.drawable.zimage);
 
-		// あーりんのイメージ
-		this.arinImage = new MovingImage(image,0,0,1,0);
 
 		// イメージたち
 		images = new ArrayList<MovingImage>();
@@ -86,6 +81,11 @@ SurfaceHolder.Callback, Runnable {
 
 	// SurfaceView生成時に呼び出される
 	public void surfaceCreated(SurfaceHolder holder) {
+		// セレクター
+		selector = new Selector(context,this.getWidth());
+		// 選択肢を更新
+		selector.setMax( counter.n /10 );
+		
 		this.holder = holder;
 		thread = new Thread(this);
 
@@ -109,9 +109,6 @@ SurfaceHolder.Callback, Runnable {
 	// スレッドによるSurfaceView更新処理
 	public void run() {
 		while (thread != null) {
-
-			// イラストの移動
-			this.arinImage.move(getWidth(), getHeight());
 
 			// オブジェクト移動
 			for (int i = 0; i < this.images.size(); i++) {
@@ -152,9 +149,6 @@ SurfaceHolder.Callback, Runnable {
 
 		// セレクターを描画
 		selector.Draw(canvas);
-
-		// イラストを描画
-		arinImage.draw(canvas);
 
 		// ボタンを描画
 		int bx = getWidth()*4/5, by = getHeight()/4;
@@ -205,9 +199,12 @@ SurfaceHolder.Callback, Runnable {
 		// 選択肢を更新
 		selector.setMax( counter.n /10 );
 		// 選択
+		selector.touch((int)event.getX(),(int) event.getY());
+		/*
 		if( event.getX() < 100){
 			selector.select( (int)event.getY() / 100 );
 		}
+		*/
 		return true;
 	}
 }

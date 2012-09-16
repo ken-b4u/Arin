@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
     	case MENU_ID_MENU1:
     		// カウンターのリセット
     		mainView.counter.clear();
-    		mainView.selector.select(0);
+    		mainView.selector.reset();
     		ret = true;
     		break;
         }
