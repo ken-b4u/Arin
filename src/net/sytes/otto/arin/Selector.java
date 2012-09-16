@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
@@ -15,8 +16,11 @@ public class Selector {
 	private Bitmap selected,unselected;
 	private Rect src;
 	private Rect dst[];
-
+	private Paint paint;
 	public Selector(Context context,int width){
+		paint = new Paint();
+		paint.setColor(Color.WHITE);
+		paint.setTextSize(30);
 		images = new Bitmap[6];
 		Resources r = context.getResources();
 		images[0] = BitmapFactory.decodeResource(r, R.drawable.n0);
@@ -42,10 +46,7 @@ public class Selector {
 	}
 
 	public void Draw(Canvas canvas){
-		Paint paint = new Paint();
-
 		for(int i=0;i<images.length;i++){
-
 			if(i==selectedIndex()){
 				canvas.drawBitmap(selected, src,dst[i],paint);
 				canvas.drawBitmap(images[i], src,dst[i],paint);
@@ -54,7 +55,9 @@ public class Selector {
 				canvas.drawBitmap(images[i], src,dst[i],paint);
 			}
 			else{
+				String s = String.format("%1$02d", 10*i);
 				canvas.drawBitmap(unselected, src,dst[i],paint);
+				canvas.drawText(s, dst[i].left,dst[i].top, paint);
 			}
 		}
 	}
