@@ -53,7 +53,7 @@ SurfaceHolder.Callback, Runnable {
 		back = BitmapFactory.decodeResource(r, R.drawable.back);
 		zImage = BitmapFactory.decodeResource(r, R.drawable.zimage);
 
-		
+
 		// イメージたち
 		images = new ArrayList<MovingImage>();
 		for(int i=0;i<3;i++)
