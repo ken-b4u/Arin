@@ -86,10 +86,6 @@ public class Selector {
 		return index;
 	}
 
-	public void add(){
-		setMax(n+1);
-	}
-
 	public void setMax(int max){
 		n = max;
 		if(n>5){

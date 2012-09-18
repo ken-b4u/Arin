@@ -84,7 +84,7 @@ SurfaceHolder.Callback, Runnable {
 		// セレクター
 		selector = new Selector(context,this.getWidth());
 		// 選択肢を更新
-		selector.setMax( counter.n /10 );
+		selector.update(counter.n);
 
 		this.holder = holder;
 		thread = new Thread(this);
