@@ -1,5 +1,6 @@
 package net.sytes.otto.arin;
 
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -17,8 +18,8 @@ public class MainActivity extends Activity {
 		mainView = new MainView(this);
 		setContentView(mainView);
 		Intent i = getIntent();
-		//i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		setVolumeControlStream(AudioManager.STREAM_MUSIC); 
 
 
 	}
