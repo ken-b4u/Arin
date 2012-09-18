@@ -8,6 +8,7 @@ public class Counter {
 	private static final String PREFERRENCES_FILE_NAME = "PrefrencesFile";
 	Context context;
 	int n;
+	final int count_stop = 9999;
 
 	public Counter(Context context){
 		this.context = context;
@@ -31,6 +32,9 @@ public class Counter {
    	}
 
 	public void write(int n){
+		if(n > count_stop){
+			return;
+		}
 		this.n = n;
 		// プリファレンスの準備 //
         SharedPreferences pref =
@@ -44,7 +48,9 @@ public class Counter {
 	}
 
 	public int clear(){
-		write(0);
+		//write(0);
+		//debug
+		write(9995);
 		return 0;
 	}
 

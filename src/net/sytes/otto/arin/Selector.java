@@ -18,7 +18,7 @@ public class Selector {
 	private Rect dst[];			// 表示する場所
 	private Paint paint;
 	private int border[] =		// いつ新しいのを開放するか
-			{0,10,20,40,80,160};
+			{0,20,40,80,160,320};
 
 	public Selector(Context context,int width){
 		paint = new Paint();
