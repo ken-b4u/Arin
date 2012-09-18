@@ -191,9 +191,9 @@ SurfaceHolder.Callback, Runnable {
 		if (dst.contains((int) event.getX(), (int) event.getY())) {
 			// 音楽が再生中でなければ再生する
 			if (!arinPlayer.isPlaying()) {
-				//arinPlayer.startRandom();
-				arinPlayer.startIndex( selector.selectedIndex());
 				counter.add();
+				//arinPlayer.startRandom();
+				arinPlayer.startIndex( selector.selectedIndex(),counter.n);
 			}
 		}
 		// 選択肢を更新

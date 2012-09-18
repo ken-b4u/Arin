@@ -48,9 +48,7 @@ public class Counter {
 	}
 
 	public int clear(){
-		//write(0);
-		//debug
-		write(9995);
+		write(0);
 		return 0;
 	}
 
