@@ -18,7 +18,6 @@ public class ArinPlayer {
         mp[3]=MediaPlayer.create(context,R.raw.sample3);
         mp[4]=MediaPlayer.create(context,R.raw.sample4);
         mp[5]=MediaPlayer.create(context,R.raw.sample5);
-
         mp50  = MediaPlayer.create(context, R.raw.b50);
 
 	}
