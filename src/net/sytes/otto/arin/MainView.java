@@ -166,11 +166,7 @@ SurfaceHolder.Callback, Runnable {
 		}
 
 		// 押された回数を描画する
-		Paint p = new Paint();
-		p.setColor(Color.MAGENTA);
-		p.setTextSize(50);
-		String s = String.format("%1$04dあーりんだよぉ", counter.read());
-		canvas.drawText(s, 0, getHeight()-40, p);
+		counter.draw(canvas, getHeight(), getWidth());
 
 		// オブジェクトを描画
 		for (int i = 0; i < this.images.size(); i++) {
