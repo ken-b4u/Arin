@@ -27,12 +27,13 @@ SurfaceHolder.Callback, Runnable {
 	private Paint paint = null;		// 描画用
 	private Bitmap button,button2;	// ボタン
 	private Bitmap back;			// 背景
-	private Bitmap zImage;			// Zイメージ
+	//private Bitmap zImage;			// Zイメージ
 	public Counter counter;			//ボタンのクリック回数
 	private ArinPlayer arinPlayer;	// あーりんプレイヤー
 	private ArrayList<MovingImage> images;	// Zイメージたち
 	public Selector selector;				// セレクター
 	private Context context;
+	
 	public MainView(Context context) {
 		super(context);
 
@@ -51,13 +52,15 @@ SurfaceHolder.Callback, Runnable {
 		button = BitmapFactory.decodeResource(r, R.drawable.button);
 		button2 = BitmapFactory.decodeResource(r, R.drawable.button2);
 		back = BitmapFactory.decodeResource(r, R.drawable.back);
-		zImage = BitmapFactory.decodeResource(r, R.drawable.zimage);
 
 
 		// イメージたち
 		images = new ArrayList<MovingImage>();
-		for(int i=0;i<3;i++)
-			images.add(new MovingImage(zImage));
+		images.add(new MovingImage(BitmapFactory.decodeResource(r, R.drawable.pink)));
+		images.add(new MovingImage(BitmapFactory.decodeResource(r, R.drawable.green)));
+		images.add(new MovingImage(BitmapFactory.decodeResource(r, R.drawable.red)));
+		images.add(new MovingImage(BitmapFactory.decodeResource(r, R.drawable.purple)));
+		images.add(new MovingImage(BitmapFactory.decodeResource(r, R.drawable.yellow)));
 
 		// あーりんプレイヤー作成
 		arinPlayer = new ArinPlayer(context);
