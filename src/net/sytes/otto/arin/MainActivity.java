@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// メニューアイテムを追加します
-		menu.add(Menu.NONE, MENU_ID_MENU1, Menu.NONE, "count reset");
+		menu.add(Menu.NONE, MENU_ID_MENU1, Menu.NONE, "リセット");
 		return super.onCreateOptionsMenu(menu);
 	}
 
