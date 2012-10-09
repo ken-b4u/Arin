@@ -11,7 +11,7 @@ public class ArinPlayer {
 
 	public ArinPlayer(Context context){
 		// メディアプレイヤーを作成
-        mp = new MediaPlayer[9];
+        mp = new MediaPlayer[12];
         mp[0]=MediaPlayer.create(context,R.raw.sample0);
         mp[1]=MediaPlayer.create(context,R.raw.sample1);
         mp[2]=MediaPlayer.create(context,R.raw.sample2);
@@ -21,6 +21,9 @@ public class ArinPlayer {
         mp[6]=MediaPlayer.create(context,R.raw.sample6);
         mp[7]=MediaPlayer.create(context,R.raw.sample7);
         mp[8]=MediaPlayer.create(context,R.raw.sample8);
+        mp[9]=MediaPlayer.create(context,R.raw.sample9);
+        mp[10]=MediaPlayer.create(context,R.raw.sample10);
+        mp[11]=MediaPlayer.create(context,R.raw.sample11);
         mp50  = MediaPlayer.create(context, R.raw.b50);
 
 	}
