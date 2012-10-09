@@ -12,7 +12,7 @@ public class Counter {
 	private Context context;
 	public int n;
 	private final int count_stop = 9999;
-	
+
 	public Counter(Context context){
 		this.context = context;
 		//プリファレンスのインスタンスを取得
@@ -30,8 +30,8 @@ public class Counter {
 		int x = width - textWidth;
 		canvas.drawText(s, x/2, height-40, p);
 	}
-	
-	
+
+
 	public int read(){
 		return n;
    	}
