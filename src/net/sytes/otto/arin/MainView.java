@@ -131,20 +131,7 @@ SurfaceHolder.Callback, Runnable {
 		if(canvas==null){
 			return;
 		}
-		// 背景色を設定
-		canvas.drawColor(Color.MAGENTA);
-
-		// グリッドを描画
-		Paint pa = new Paint();
-		pa.setColor(Color.argb(75, 255, 255, 255));
-		pa.setStrokeWidth(1);
-		for (int y = 0; y < 800; y = y + 10) {
-			canvas.drawLine(0, y, 479, y, pa);
-		}
-		for (int x = 0; x < 480; x = x + 10) {
-			canvas.drawLine(x, 0, x, 799, pa);
-		}
-
+		
 		// 背景を描画
 		Rect src = new Rect(0,0,back.getWidth(),back.getHeight());
 		Rect dst = new Rect(0,0,getWidth(),getHeight());
