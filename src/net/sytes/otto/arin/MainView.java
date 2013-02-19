@@ -33,6 +33,7 @@ SurfaceHolder.Callback, Runnable {
 	private ArrayList<MovingImage> images;	// Zイメージたち
 	public Selector selector;				// セレクター
 	private Context context;
+	public boolean isOnPause;
 	
 	public MainView(Context context) {
 		super(context);
@@ -117,11 +118,12 @@ SurfaceHolder.Callback, Runnable {
 			for (int i = 0; i < this.images.size(); i++) {
 				images.get(i).move(getWidth(),getHeight());
 			}
-			// 描画処理
-			Canvas canvas = holder.lockCanvas();
-			this.draw(canvas);
-			holder.unlockCanvasAndPost(canvas);
-
+			if(!isOnPause) {
+				// 描画処理
+				Canvas canvas = holder.lockCanvas();
+				this.draw(canvas);
+				holder.unlockCanvasAndPost(canvas);
+			}
 		}
 	}
 

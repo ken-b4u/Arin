@@ -53,11 +53,19 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		finish();
+		mainView.isOnPause = true;
 	}
+	
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		mainView.isOnPause = false;
+	}
+	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		finish();
 		System.exit(0);
 	}
 
