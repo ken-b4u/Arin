@@ -11,6 +11,7 @@ import android.view.WindowManager;
 
 public class MainActivity extends Activity {
 	private static final int MENU_ID_MENU1 = (Menu.FIRST + 1);
+	private static final int MENU_ID_MENU2 = (Menu.FIRST + 2);
 	private MainView mainView;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class MainActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// メニューアイテムを追加します
 		menu.add(Menu.NONE, MENU_ID_MENU1, Menu.NONE, "リセット");
+		menu.add(Menu.NONE, MENU_ID_MENU2, Menu.NONE, "つぶやく");
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -46,6 +48,16 @@ public class MainActivity extends Activity {
 			mainView.selector.reset();
 			ret = true;
 			break;
+		case MENU_ID_MENU2:
+			// つぶやく
+	    	Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+	        intent.setType("text/plain");
+	        String content = mainView.counter.n + "あーりんだよぉ☆彡\n"
+	        		+"https://play.google.com/store/apps/developer?id=bobuhiro11\n"
+	        	    +"[from あーりんだよぉボタン]";
+	        intent.putExtra(Intent.EXTRA_TEXT, content);
+	        startActivity(Intent.createChooser(
+	                intent, "Twitterを選択してください．"));
 		}
 		return ret;
 	}
