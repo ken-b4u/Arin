@@ -50,15 +50,14 @@ public class MainActivity extends Activity {
 			break;
 		case MENU_ID_MENU2:
 			// つぶやく
-	    	Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-	        intent.setType("text/plain");
-	        String content = mainView.counter.n + "あーりんだよぉ☆彡\n"
-	        		+"https://play.google.com/store/apps/developer?id=bobuhiro11\n"
-	        	    +"[from あーりんだよぉボタン]";
-	        intent.putExtra(Intent.EXTRA_TEXT, content);
-	        startActivity(Intent.createChooser(
-	                intent, "Twitterを選択してください．"));
-		}
+			Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+				intent.setType("text/plain");
+				String content = mainView.counter.n + getString(R.string.share_strings_1)
+						+ getString(R.string.my_store_url)
+						+ getString(R.string.from_app_name);
+				intent.putExtra(Intent.EXTRA_TEXT, content);
+				startActivity(Intent.createChooser(intent, getString(R.string.share_dialog_title)));
+			}
 		return ret;
 	}
 

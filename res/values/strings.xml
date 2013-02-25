@@ -4,5 +4,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">あーりんだよぉ</string>
-
+    <string name="share_strings_1">あーりんだよぉ☆彡\n</string>
+    <string name="my_store_url">https://play.google.com/store/apps/developer?id=bobuhiro11\n</string>
+    <string name="from_app_name">[from あーりんだよぉボタン]</string>
+    <string name="share_dialog_title">Twitterを選択してください。</string>
 </resources>
