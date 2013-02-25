@@ -7,7 +7,7 @@ import android.media.MediaPlayer;
 
 public class ArinPlayer {
 	private MediaPlayer mp[];				// 音声再生
-	private MediaPlayer mp50;	// 50の時は特殊な音
+	private MediaPlayer mp50;				// 50の時は特殊な音
 
 	public ArinPlayer(Context context){
 		// メディアプレイヤーを作成

@@ -27,7 +27,6 @@ SurfaceHolder.Callback, Runnable {
 	private Paint paint = null;		// 描画用
 	private Bitmap button,button2;	// ボタン
 	private Bitmap back;			// 背景
-	//private Bitmap zImage;			// Zイメージ
 	public Counter counter;			//ボタンのクリック回数
 	private ArinPlayer arinPlayer;	// あーりんプレイヤー
 	private ArrayList<MovingImage> images;	// Zイメージたち
@@ -158,7 +157,7 @@ SurfaceHolder.Callback, Runnable {
 		}
 
 		// 押された回数を描画する
-		counter.draw(canvas, getHeight(), getWidth());
+		counter.draw(canvas);
 
 		// オブジェクトを描画
 		for (int i = 0; i < this.images.size(); i++) {

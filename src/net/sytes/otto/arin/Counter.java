@@ -21,7 +21,9 @@ public class Counter {
         n = pre.getInt("key", 0);
 	}
 
-	public void draw(Canvas canvas,int height,int width){
+	public void draw(Canvas canvas){
+		int height = canvas.getHeight();
+		int width  = canvas.getWidth();
 		Paint p = new Paint();
 		p.setColor(Color.MAGENTA);
 		p.setTextSize(50);
